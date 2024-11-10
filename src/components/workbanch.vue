@@ -1,17 +1,11 @@
 <template>
 <div class="workbanch">
-  <span> {{ counter.count }}</span>
-  <div class="control">
-    <el-button round @click="counter.increment()">Increment</el-button>
-    <el-button round @click="counter.double()">Double</el-button>
-  </div>
+  <joint-paper></joint-paper>
 </div>
 </template>
 
 <script setup lang="ts">
-import {useCounterStore} from "@/stores/counter";
-
-const counter = useCounterStore();
+import JointPaper from "@/components/joint-paper.vue";
 
 </script>
 
