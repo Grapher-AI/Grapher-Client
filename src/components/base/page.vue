@@ -1,16 +1,16 @@
 <template>
   <div class="page">
-    <header>
+    <header v-if="header">
       <slot name="header">
         <default-header />
       </slot>
     </header>
-    <main>
+    <main v-if="main">
       <slot name="main">
         <default-main />
       </slot>
     </main>
-    <footer>
+    <footer v-if="footer">
       <slot name="footer">
         <default-footer />
       </slot>
@@ -22,6 +22,16 @@
 import DefaultHeader from "@/components/base/default-header.vue";
 import DefaultMain from "@/components/base/default-main.vue";
 import DefaultFooter from "@/components/base/default-footer.vue";
+
+interface Props {
+  header?: boolean;
+  main?: boolean;
+  footer?: boolean;
+}
+
+
+const {header = true, footer = true, main = true} = defineProps<Props>();
+
 </script>
 
 <style scoped>

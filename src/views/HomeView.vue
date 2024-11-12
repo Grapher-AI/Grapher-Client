@@ -1,6 +1,6 @@
 <template>
-  <page>
-    <template #main>
+  <page :footer="false" :header="false">
+    <template #main class="homeView-main">
       <workbanch></workbanch>
     </template>
   </page>
@@ -12,4 +12,7 @@ import Workbanch from "@/components/workbanch.vue";
 </script>
 
 <style>
+.homeView-main{
+  display: flex;
+}
 </style>

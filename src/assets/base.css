@@ -16,4 +16,5 @@ body {
   width: 100%;
   min-height: inherit;
   position: relative;
+  --sans-serif: "Söhne", helvetica, sans-serif;
 }

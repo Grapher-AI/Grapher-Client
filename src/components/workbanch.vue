@@ -12,11 +12,7 @@ import JointPaper from "@/components/joint-paper.vue";
 <style scoped>
 .workbanch{
   display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
+  flex-grow: 1;
   position: relative;
   .control {
     display: flex;
