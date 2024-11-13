@@ -1,20 +1,24 @@
 <template>
 <div class="paper-wrap">
-  <prompt-area ref="promptArea" />
+  <div ref="promptDiv" class="prompt-div-wrapper" >
+    <prompt-area ref="promptArea" />
+  </div>
   <div ref="paperDiv" id="paperDiv" class="paper"></div>
 </div>
 </template>
 
 <script setup lang="ts">
 import {computed, onMounted, ref} from "vue";
-import {type Ref} from 'vue'
-import { dia, shapes, util, g } from '@joint/core';
+import { dia, shapes, util, g, routers } from '@joint/core';
 import PromptArea from "@/components/prompt-area.vue";
+import { PromptShape, PromptShapeView } from "@/jointjs-plugins/prompt-shape";
 
 const promptArea = ref()
+
+const promptDiv = ref()
 const paperDiv = ref(null);
 
-const namespace = shapes;
+const namespace = { shapes, customShapes: { PromptShape, PromptShapeView } };
 
 const graph = new dia.Graph({}, { cellNamespace: namespace });
 
@@ -24,6 +28,8 @@ onMounted(()=>{
     model: graph,
     width: '100%',
     height: '100%',
+    // width: document.body.getBoundingClientRect().width,
+    // height: document.body.getBoundingClientRect().height,
     drawGridSize: 10,
     gridSize: 10,
     drawGrid: true,
@@ -56,43 +62,47 @@ onMounted(()=>{
   // const fillColor = '#ededed';
   const fillColor = 'rgb(243,243,243)';
 
-  const rect1 = new shapes.standard.Rectangle();
+  const strokeWidth = 2;
+  const fontSize = 14;
+
+  const rect1 = new shapes.standard.Rectangle({size:{width: 180, height: 50}});
   rect1.position(25, 25);
-  rect1.resize(180, 50);
   rect1.addTo(graph);
 
-  const rect2 = new shapes.standard.Rectangle();
-  rect2.position(95, 225);
-  rect2.resize(180, 50);
+  const rect2 = new shapes.standard.Rectangle({size:{width: 180, height: 50}});
+  rect2.position(135, 225);
   rect2.addTo(graph);
 
-  rect1.attr('body', { stroke: strokeColor,fill:fillColor, rx: 2, ry: 2 });
-  rect2.attr('body', { stroke: strokeColor,fill:fillColor, rx: 2, ry: 2 });
+  rect1.attr('body', { stroke: strokeColor,fill:fillColor, rx: 2, ry: 2, strokeWidth: strokeWidth});
+  rect2.attr('body', { stroke: strokeColor,fill:fillColor, rx: 2, ry: 2, strokeWidth: strokeWidth});
 
-  rect1.attr('label', { text: 'Welcome', fill: '#353535' });
-  rect2.attr('label', { text: 'Grapher!', fill: '#353535' });
+  rect1.attr('label', { text: 'Welcome', fill: '#353535', fontSize: fontSize });
+  rect2.attr('label', { text: 'Grapher!', fill: '#353535', fontSize: fontSize });
 
   const link1_2 = new shapes.standard.Link();
   link1_2.source(rect1);
   link1_2.target(rect2);
   link1_2.addTo(graph);
 
+  link1_2.attr('body',{
+      strokeWidth: 4
+  });
+
   link1_2.appendLabel({
     attrs: {
       text: {
-        text: 'to the'
+        text: 'to the', fontSize: fontSize
       }
     }
   });
   link1_2.router('orthogonal');
   link1_2.connector('straight', {  cornerType: 'line' });
 
-  const rect3 = new shapes.standard.Rectangle({size:{width: 400, height: 100}});
-  rect3.position(25, 425);
-  // rect3.resize(180, 50);
+  const rect3 = new shapes.standard.Rectangle({size:{width: 380, height: 50}});
+  rect3.position(175, 425);
   rect3.addTo(graph);
-  rect3.attr('body', { stroke: strokeColor,fill:fillColor, rx: 2, ry: 2 });
-  rect3.attr('label', { text: `Generates graphs, to response on your's ✨ amazing ✨ prompts!`, fill: '#353535' });
+  rect3.attr('body', { stroke: strokeColor,fill:fillColor, rx: 2, ry: 2, borderWidth: 10, strokeWidth: strokeWidth});
+  rect3.attr('label', { text: `Generates graphs, to response on your's ✨ amazing ✨ prompts!`, fill: '#353535', fontSize: fontSize });
 
   const link2_3 = new shapes.standard.Link();
   link2_3.source(rect2);
@@ -102,43 +112,54 @@ onMounted(()=>{
   link2_3.appendLabel({
     attrs: {
       text: {
-        text: 'I can'
+        text: 'I can', fontSize: fontSize
       }
     }
   });
-  link2_3.router('orthogonal');
+  // link2_3.router('orthogonal',{
+  //   startDirections: ['bottom'],
+  //   endDirections: ['left']
+  // });
+  link2_3.router('rightAngle', {
+    margin: 10,
+    sourceDirection: routers.rightAngle.Directions.BOTTOM,
+    targetDirection: routers.rightAngle.Directions.TOP
+  });
   link2_3.connector('straight', {  cornerType: 'line' });
 
-  // const rect4 = new shapes.standard.Rectangle({size:{width: 400, height: 140}});
-  // rect4.position(455, 155);
-  // // rect4.resize(180, 50);
-  // rect4.addTo(graph);
-  // rect4.attr('body', { stroke: '#C94A46', rx: 2, ry: 2 });
-  // rect4.attr('label', { text: '', style:{fontSize: 24}, fill: '#353535',contenteditable: true });
 
-  // paper.transformToFitContent({padding: 100});
+  const promtShape = new PromptShape();
+  promtShape.addTo(graph);
+  promtShape.applyForeign(promptDiv.value);
+  // promtShape.resize(promptAreaRect.width,promptAreaRect.height)
+  promtShape.resize(455,190)
+  promtShape.position(455,25)
+
   const link3_4 = new shapes.standard.Link();
   link3_4.source(rect3);
-  // link3_4.target(rect4);
-  const promptAreaRect = promptArea.value.getRect();
-  // paper.transformToFitContent({padding: 100});
-  console.log(promptAreaRect);
-  link3_4.target({x:promptAreaRect.x + promptAreaRect.width / 2, y:promptAreaRect.y +  promptAreaRect.height});
-  // link3_4.target({x:promptAreaRect.width / 2, y:promptAreaRect.height});
-  // link3_4.target(new g.Point(100, 100));
-  // link3_4.target({x:0, y:0});
+  link3_4.target(promtShape);
   link3_4.addTo(graph);
 
   link3_4.appendLabel({
     attrs: {
       text: {
-        text: 'Try here!'
+        text: 'Try me here!', fontSize: fontSize
       }
     }
   });
-  link3_4.router('orthogonal');
+  // link3_4.router('manhattan',{
+  //   startDirections: ['bottom'],
+  //   endDirections: ['bottom']
+  // });
+
+  link3_4.router('rightAngle', {
+    margin: 25,
+    sourceDirection: routers.rightAngle.Directions.BOTTOM,
+    targetDirection: routers.rightAngle.Directions.BOTTOM
+  });
   link3_4.connector('straight', {  cornerType: 'line' });
-  // paper.transformToFitContent();
+
+  paper.transformToFitContent({padding: 100});
 });
 
 </script>
@@ -151,6 +172,11 @@ onMounted(()=>{
   flex: 1;
 }
 .paper{
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.prompt-div-wrapper{
   position: relative;
   width: 100%;
   height: 100%;

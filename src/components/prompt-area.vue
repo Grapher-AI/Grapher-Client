@@ -1,28 +1,32 @@
 <template>
 <div ref="promptArea" class="prompt-area">
+  <el-input
+    class="prompt-area-input"
+    v-model="textarea"
+    type="textarea"
+    resize="none"
+    placeholder="Best place for your prompts are here ♥️"
+  />
   <div class="pin">
     <span class="cloak">powered by ChatGPT</span>
     <div class="cloak"><el-button :icon="MagicStick" style="font-size: 18px" circle size="large"></el-button></div>
   </div>
-  <el-input
-    class="prompt-area-input"
-    v-model="textarea"
-    style="width: 480px; height: 320px"
-    type="textarea"
-    resize="none"
-    placeholder="Please input"
-  />
 </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import {computed, ref} from 'vue'
 import { MagicStick } from '@element-plus/icons-vue'
 
-const textarea = ref('Prompt, prompt, promt,Prompt, prompt, promt,Prompt, prompt, promt')
+const textarea = ref('')
 const promptArea = ref<HTMLDivElement>();
+
 function getRect() {
+  // console.log('promptArea.value?.getBoundingClientRect()',promptArea.value?.getBoundingClientRect());
   return promptArea.value?.getBoundingClientRect();
+  // return {width: promptArea.value?.clientWidth, height: promptArea.value?.clientHeight};
+  // return size.value
+  // return sizeWithboundaryes.value
 }
 
 function move() {
@@ -40,7 +44,7 @@ defineExpose({
 textarea {
   box-shadow: none !important;
   background-color: rgba(255, 255, 255, 0) !important;
-  font-size: 24px !important;
+  font-size: 14px !important;
   color: black !important;
   height: 100%;
 }
@@ -48,16 +52,14 @@ textarea {
 
 <style scoped lang="css">
 .prompt-area {
-  position: absolute;
+  position: relative;
+  width: 100%;
+  height: 100%;
   z-index: 10000;
   padding: 2px;
   background-color: rgba(255, 255, 255, 0.44);
-  border: 3px solid rgba(149, 149, 149, 0.84);
+  border: 1px solid rgba(149, 149, 149, 0.84);
   border-radius: 12px;
-  top: 10%;
-  right: 10%;
-  //top: 100px;
-  //left: 100px;
 
   div.pin{
     position: absolute;
@@ -65,7 +67,7 @@ textarea {
     align-items: center;
     transform: translate(0px, 50%);
     bottom: 0px;
-    right: 1%;
+    right: 2%;
     span {
       color: rgb(12 163 127);
       font-family: var(--sans-serif);
@@ -80,5 +82,11 @@ textarea {
     }
   }
 }
-
+.prompt-area-input{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 8px;
+}
 </style>
