@@ -12,9 +12,9 @@ body {
   margin: 0;
 }
 
-#app{
+#app {
   width: 100%;
   min-height: inherit;
   position: relative;
-  --sans-serif: "Söhne", helvetica, sans-serif;
+  --sans-serif: 'Söhne', helvetica, sans-serif;
 }

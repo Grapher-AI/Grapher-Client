@@ -1,43 +1,42 @@
 <template>
-<div ref="promptArea" class="prompt-area">
-  <el-input
-    class="prompt-area-input"
-    v-model="textarea"
-    type="textarea"
-    resize="none"
-    placeholder="Best place for your prompts are here ♥️"
-  />
-  <div class="pin">
-    <span class="cloak">powered by ChatGPT</span>
-    <div class="cloak"><el-button :icon="MagicStick" style="font-size: 18px" circle size="large"></el-button></div>
+  <div ref="promptArea" class="prompt-area">
+    <el-input
+      class="prompt-area-input"
+      v-model="textarea"
+      type="textarea"
+      resize="none"
+      placeholder="Best place for your prompts are here ♥️"
+    />
+    <div class="pin">
+      <span class="cloak">powered by ChatGPT</span>
+      <div class="cloak">
+        <el-button :icon="MagicStick" style="font-size: 18px" circle size="large"></el-button>
+      </div>
+    </div>
   </div>
-</div>
 </template>
 
 <script setup lang="ts">
-import {computed, ref} from 'vue'
+import { computed, ref } from 'vue'
 import { MagicStick } from '@element-plus/icons-vue'
 
 const textarea = ref('')
-const promptArea = ref<HTMLDivElement>();
+const promptArea = ref<HTMLDivElement>()
 
 function getRect() {
   // console.log('promptArea.value?.getBoundingClientRect()',promptArea.value?.getBoundingClientRect());
-  return promptArea.value?.getBoundingClientRect();
+  return promptArea.value?.getBoundingClientRect()
   // return {width: promptArea.value?.clientWidth, height: promptArea.value?.clientHeight};
   // return size.value
   // return sizeWithboundaryes.value
 }
 
-function move() {
-
-}
+function move() {}
 
 defineExpose({
   move,
-  getRect
+  getRect,
 })
-
 </script>
 
 <style>
@@ -61,7 +60,7 @@ textarea {
   border: 1px solid rgba(149, 149, 149, 0.84);
   border-radius: 12px;
 
-  div.pin{
+  div.pin {
     position: absolute;
     display: flex;
     align-items: center;
@@ -74,15 +73,15 @@ textarea {
       font-size: 14px;
     }
 
-    .cloak{
-      background: #F5F5F5;
+    .cloak {
+      background: #f5f5f5;
       padding: 0 3px;
       margin: 0 3px;
       border-radius: 29px;
     }
   }
 }
-.prompt-area-input{
+.prompt-area-input {
   position: relative;
   width: 100%;
   height: 100%;

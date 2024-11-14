@@ -19,21 +19,19 @@
 </template>
 
 <script setup lang="ts">
-import DefaultHeader from "@/components/base/default-header.vue";
-import DefaultMain from "@/components/base/default-main.vue";
-import DefaultFooter from "@/components/base/default-footer.vue";
+import DefaultHeader from '@/components/base/default-header.vue'
+import DefaultMain from '@/components/base/default-main.vue'
+import DefaultFooter from '@/components/base/default-footer.vue'
 
 interface Props {
-  header?: boolean;
-  main?: boolean;
-  footer?: boolean;
+  header?: boolean
+  main?: boolean
+  footer?: boolean
 }
 
-
-const {header = true, footer = true, main = true} = defineProps<Props>();
-
+const { header = true, footer = true, main = true } = defineProps<Props>()
 </script>
 
 <style scoped>
-@import "@/assets/page.css";
+@import '@/assets/page.css';
 </style>

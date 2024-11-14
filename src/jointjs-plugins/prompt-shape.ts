@@ -1,11 +1,11 @@
-import {dia, util} from '@joint/core';
+import { dia, util } from '@joint/core'
 
-const markup = util.svg/* xml */`
+const markup = util.svg/* xml */ `
     <foreignObject @selector="foreignObject"/>
-`;
+`
 export class PromptShape extends dia.Element {
   preinitialize() {
-    this.markup = markup;
+    this.markup = markup
   }
 
   public applyForeign?: (htmlElement: HTMLElement) => void
@@ -26,7 +26,7 @@ export class PromptShape extends dia.Element {
           height: 'calc(h)',
           strokeWidth: 2,
           stroke: '#333333',
-          fill: '#FFFFFF'
+          fill: '#FFFFFF',
         },
         label: {
           textVerticalAnchor: 'middle',
@@ -34,25 +34,25 @@ export class PromptShape extends dia.Element {
           x: 'calc(0.5*w)',
           y: 'calc(0.5*h)',
           fontSize: 14,
-          fill: '#333333'
-        }
-      }
-    };
+          fill: '#333333',
+        },
+      },
+    }
   }
 }
 
 export class PromptShapeView extends dia.ElementView {
   render(): this {
-    super.renderMarkup();
-    const model = this.model as PromptShape;
+    super.renderMarkup()
+    const model = this.model as PromptShape
 
     const foreignObject = this.el.querySelector('foreignObject')
 
-    model.applyForeign = (htmlElement: HTMLElement)=>{
-      if(!foreignObject) throw new Error('ForeignObject not found');
-      foreignObject.append(htmlElement);
+    model.applyForeign = (htmlElement: HTMLElement) => {
+      if (!foreignObject) throw new Error('ForeignObject not found')
+      foreignObject.append(htmlElement)
     }
 
-    return  this;
+    return this
   }
 }

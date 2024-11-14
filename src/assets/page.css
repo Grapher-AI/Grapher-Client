@@ -6,9 +6,9 @@
   flex-direction: column;
 
   header {
-      position: relative;
-      background-color: aliceblue;
-      padding: 12px;
+    position: relative;
+    background-color: aliceblue;
+    padding: 12px;
   }
 
   main {
