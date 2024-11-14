@@ -1,6 +1,6 @@
 <template>
 <div class="paper-wrap">
-  <div ref="promptDiv" class="prompt-div-wrapper" >
+  <div ref="promptWrapper" class="prompt-div-wrapper" >
     <prompt-area ref="promptArea" />
   </div>
   <div ref="paperDiv" id="paperDiv" class="paper"></div>
@@ -13,10 +13,9 @@ import { dia, shapes, util, g, routers } from '@joint/core';
 import PromptArea from "@/components/prompt-area.vue";
 import { PromptShape, PromptShapeView } from "@/jointjs-plugins/prompt-shape";
 
-const promptArea = ref()
-
-const promptDiv = ref()
-const paperDiv = ref(null);
+const promptArea = ref<typeof PromptArea>()
+const promptWrapper = ref<HTMLDivElement>()
+const paperDiv = ref<HTMLDivElement>();
 
 const namespace = { shapes, customShapes: { PromptShape, PromptShapeView } };
 
@@ -68,28 +67,33 @@ onMounted(()=>{
   const rect1 = new shapes.standard.Rectangle({size:{width: 180, height: 50}});
   rect1.position(25, 25);
   rect1.addTo(graph);
+  rect1.attr('body', { stroke: strokeColor, fill:fillColor, rx: 2, ry: 2, strokeWidth: strokeWidth});
+  rect1.attr('label', { text: 'Welcome', fill: '#353535', fontSize: fontSize });
 
   const rect2 = new shapes.standard.Rectangle({size:{width: 180, height: 50}});
   rect2.position(135, 225);
   rect2.addTo(graph);
-
-  rect1.attr('body', { stroke: strokeColor,fill:fillColor, rx: 2, ry: 2, strokeWidth: strokeWidth});
   rect2.attr('body', { stroke: strokeColor,fill:fillColor, rx: 2, ry: 2, strokeWidth: strokeWidth});
-
-  rect1.attr('label', { text: 'Welcome', fill: '#353535', fontSize: fontSize });
   rect2.attr('label', { text: 'Grapher!', fill: '#353535', fontSize: fontSize });
+
+  const rect3 = new shapes.standard.Rectangle({size:{width: 380, height: 50}});
+  rect3.position(175, 425);
+  rect3.addTo(graph);
+  rect3.attr('body', { stroke: strokeColor,fill:fillColor, rx: 2, ry: 2, borderWidth: 10, strokeWidth: strokeWidth});
+  rect3.attr('label', { text: `Generates graphs, to response on your's ✨ amazing ✨ prompts!`, fill: '#353535', fontSize: fontSize });
+
+  const promptShape = new PromptShape();
+  promptShape.addTo(graph);
+  promptShape.applyForeign!(promptWrapper.value!);
+  promptShape.resize(455,190)
+  promptShape.position(455,25)
 
   const link1_2 = new shapes.standard.Link();
   link1_2.source(rect1);
   link1_2.target(rect2);
   link1_2.addTo(graph);
-
-  link1_2.attr('body',{
-      strokeWidth: 4
-  });
-
-  link1_2.appendLabel({
-    attrs: {
+  link1_2.attr('body',{ strokeWidth: 4 });
+  link1_2.appendLabel({ attrs: {
       text: {
         text: 'to the', fontSize: fontSize
       }
@@ -98,28 +102,17 @@ onMounted(()=>{
   link1_2.router('orthogonal');
   link1_2.connector('straight', {  cornerType: 'line' });
 
-  const rect3 = new shapes.standard.Rectangle({size:{width: 380, height: 50}});
-  rect3.position(175, 425);
-  rect3.addTo(graph);
-  rect3.attr('body', { stroke: strokeColor,fill:fillColor, rx: 2, ry: 2, borderWidth: 10, strokeWidth: strokeWidth});
-  rect3.attr('label', { text: `Generates graphs, to response on your's ✨ amazing ✨ prompts!`, fill: '#353535', fontSize: fontSize });
 
   const link2_3 = new shapes.standard.Link();
   link2_3.source(rect2);
   link2_3.target(rect3);
   link2_3.addTo(graph);
-
-  link2_3.appendLabel({
-    attrs: {
+  link2_3.appendLabel({ attrs: {
       text: {
         text: 'I can', fontSize: fontSize
       }
     }
   });
-  // link2_3.router('orthogonal',{
-  //   startDirections: ['bottom'],
-  //   endDirections: ['left']
-  // });
   link2_3.router('rightAngle', {
     margin: 10,
     sourceDirection: routers.rightAngle.Directions.BOTTOM,
@@ -127,31 +120,16 @@ onMounted(()=>{
   });
   link2_3.connector('straight', {  cornerType: 'line' });
 
-
-  const promtShape = new PromptShape();
-  promtShape.addTo(graph);
-  promtShape.applyForeign(promptDiv.value);
-  // promtShape.resize(promptAreaRect.width,promptAreaRect.height)
-  promtShape.resize(455,190)
-  promtShape.position(455,25)
-
   const link3_4 = new shapes.standard.Link();
   link3_4.source(rect3);
-  link3_4.target(promtShape);
+  link3_4.target(promptShape);
   link3_4.addTo(graph);
-
-  link3_4.appendLabel({
-    attrs: {
+  link3_4.appendLabel({ attrs: {
       text: {
         text: 'Try me here!', fontSize: fontSize
       }
     }
   });
-  // link3_4.router('manhattan',{
-  //   startDirections: ['bottom'],
-  //   endDirections: ['bottom']
-  // });
-
   link3_4.router('rightAngle', {
     margin: 25,
     sourceDirection: routers.rightAngle.Directions.BOTTOM,

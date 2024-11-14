@@ -1,4 +1,4 @@
-import { dia,util } from '@joint/core';
+import {dia, util} from '@joint/core';
 
 const markup = util.svg/* xml */`
     <foreignObject @selector="foreignObject"/>
@@ -7,6 +7,8 @@ export class PromptShape extends dia.Element {
   preinitialize() {
     this.markup = markup;
   }
+
+  public applyForeign?: (htmlElement: HTMLElement) => void
 
   defaults() {
     return {
@@ -40,13 +42,17 @@ export class PromptShape extends dia.Element {
 }
 
 export class PromptShapeView extends dia.ElementView {
-  render() {
+  render(): this {
     super.renderMarkup();
+    const model = this.model as PromptShape;
 
-    const foreignObject = this.$el[0].querySelector('foreignObject')
+    const foreignObject = this.el.querySelector('foreignObject')
 
-    this.model.applyForeign = (htmlElement: HTMLElement)=>{
+    model.applyForeign = (htmlElement: HTMLElement)=>{
+      if(!foreignObject) throw new Error('ForeignObject not found');
       foreignObject.append(htmlElement);
     }
+
+    return  this;
   }
 }
