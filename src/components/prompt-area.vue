@@ -10,7 +10,7 @@
     <div class="pin">
       <span class="cloak">powered by ChatGPT</span>
       <div class="cloak">
-        <el-button :icon="MagicStick" style="font-size: 18px" circle size="large"></el-button>
+        <el-button @click="$emit('promptApply', textarea)" :icon="MagicStick" style="font-size: 18px" circle size="large"></el-button>
       </div>
     </div>
   </div>
@@ -24,11 +24,7 @@ const textarea = ref('')
 const promptArea = ref<HTMLDivElement>()
 
 function getRect() {
-  // console.log('promptArea.value?.getBoundingClientRect()',promptArea.value?.getBoundingClientRect());
   return promptArea.value?.getBoundingClientRect()
-  // return {width: promptArea.value?.clientWidth, height: promptArea.value?.clientHeight};
-  // return size.value
-  // return sizeWithboundaryes.value
 }
 
 function move() {}
@@ -44,8 +40,10 @@ textarea {
   box-shadow: none !important;
   background-color: rgba(255, 255, 255, 0) !important;
   font-size: 14px !important;
-  color: black !important;
   height: 100%;
+  font-family: var(--sans-serif) !important;
+  font-feature-settings: var(--fontFeature) 0;
+  --el-input-text-color: #353740;
 }
 </style>
 
@@ -78,6 +76,17 @@ textarea {
       padding: 0 3px;
       margin: 0 3px;
       border-radius: 29px;
+
+      button:hover,button:focus {
+        color: rgb(36 164 133);
+        border-color: rgb(31 204 163 / 29%);
+        background-color: rgb(51 228 186 / 8%);
+      }
+      button:active {
+        color: rgb(36 164 133);
+        border-color: rgba(31, 204, 163, 0.7);
+        background-color: rgb(51 228 186 / 8%);
+      }
     }
   }
 }
