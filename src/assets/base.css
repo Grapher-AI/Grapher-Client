@@ -17,4 +17,5 @@ body {
   min-height: inherit;
   position: relative;
   --sans-serif: 'Söhne', helvetica, sans-serif;
+  --fontFeature: 'liga'
 }

@@ -16,9 +16,12 @@
   },
   "dependencies": {
     "@joint/core": "^4.0.4",
+    "@joint/layout-directed-graph": "^4.0.3",
+    "openai": "^4.73.0",
     "pinia": "^2.2.6",
     "vue": "^3.5.12",
-    "vue-router": "^4.4.5"
+    "vue-router": "^4.4.5",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@element-plus/icons-vue": "2.1.0",
