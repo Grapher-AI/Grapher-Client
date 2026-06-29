@@ -8,6 +8,10 @@ export const useCounterStore = defineStore('counter', () => {
     count.value++
   }
 
+  function delat() {
+    return 'done'
+  }
+
   function double() {
     count.value = count.value * 2
   }
